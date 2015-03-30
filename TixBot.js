@@ -69,11 +69,11 @@ var tfu = {
 		var unixTime = new Date().getTime();
 		var roomId = this.getRoomId(eventObj);
 
-		if(eventObj.find('.text').last().text().indexOf(' в комнату') > -1) {
+		if(eventObj.find('.text').last().text().indexOf(' РІ РєРѕРјРЅР°С‚Сѓ') > -1) {
 			var author = eventObj.find('.author').last().text();
 			this.send('Hello ' + author + '!', roomId);
 		}
-		else if(eventObj.find('.text').last().text().indexOf(' из комнаты') > -1 || eventObj.find('.text').last().text().indexOf(' из чата') > -1) {
+		else if(eventObj.find('.text').last().text().indexOf(' РёР· РєРѕРјРЅР°С‚С‹') > -1 || eventObj.find('.text').last().text().indexOf(' РёР· С‡Р°С‚Р°') > -1) {
 			/* Do something after leave user */
 		}
 	},
@@ -88,32 +88,32 @@ var tfu = {
 			switch(cmd[0]) {
 				case 'rule':
 				case 'rules':
-				case 'правила':
-				case 'правило':
-					tfu.send("Правила комнаты!\n- Их пока нет");
+				case 'РїСЂР°РІРёР»Р°':
+				case 'РїСЂР°РІРёР»Рѕ':
+					tfu.send("РџСЂР°РІРёР»Р° РєРѕРјРЅР°С‚С‹!\n- РС… РїРѕРєР° РЅРµС‚");
 					break;
 				case 'hi':
 				case 'hello':
-				case 'хай':
-				case 'привет':
-					tfu.send("Всем привет");
+				case 'С…Р°Р№':
+				case 'РїСЂРёРІРµС‚':
+					tfu.send("Р’СЃРµРј РїСЂРёРІРµС‚");
 					break;
 				case 'bye':
-				case 'пока':
-					tfu.send('С вами прощаются и говорят всем пока!');
+				case 'РїРѕРєР°':
+					tfu.send('РЎ РІР°РјРё РїСЂРѕС‰Р°СЋС‚СЃСЏ Рё РіРѕРІРѕСЂСЏС‚ РІСЃРµРј РїРѕРєР°!');
 					break;
 				case 'say':
-				case 'сказать':
-				case 'скажи':
+				case 'СЃРєР°Р·Р°С‚СЊ':
+				case 'СЃРєР°Р¶Рё':
 					tfu.deleteAuthorCmd(msgObj);
 					if(cmd.length > 1) {
-						tfu.send("- " + tfu.replaceUser(msgObj, msg.substr(cmd[0].length + 2)) + "\n ( сказал(а): +" + (msgObj.parent().parent().find('.author').text()) + " )");
+						tfu.send("- " + tfu.replaceUser(msgObj, msg.substr(cmd[0].length + 2)) + "\n ( СЃРєР°Р·Р°Р»(Р°): +" + (msgObj.parent().parent().find('.author').text()) + " )");
 					}
 					break;
 				case 'gender':
 				case 'sex':
-				case 'род':
-				case 'пол':
+				case 'СЂРѕРґ':
+				case 'РїРѕР»':
 					var userData;
 					var requestUser = msgObj.find('span.user');
 					if(requestUser.length > 0) {
@@ -124,16 +124,16 @@ var tfu = {
 					else {
 						userData = tfu.getUserData(tfu.getAuthorID(msgObj));
 					}
-					tfu.send("У " + userData['name'] + " пол: " + (userData['sex'] == 'm' ? 'мужской' : 'женский'));
+					tfu.send("РЈ " + userData['name'] + " РїРѕР»: " + (userData['sex'] == 'm' ? 'РјСѓР¶СЃРєРѕР№' : 'Р¶РµРЅСЃРєРёР№'));
 					break;
 				case 'info':
 				case 'author':
-				case 'инфо':
-				case 'автор':
-					tfu.send("Автор:\n\
-						- Вафлан (Руслан)\n\
+				case 'РёРЅС„Рѕ':
+				case 'Р°РІС‚РѕСЂ':
+					tfu.send("РђРІС‚РѕСЂ:\n\
+						- Р’Р°С„Р»Р°РЅ (Р СѓСЃР»Р°РЅ)\n\
 						\n\
-						Идеи и помошь:\n\
+						РРґРµРё Рё РїРѕРјРѕС€СЊ:\n\
 						- St.Niga Alex\n\
 						- TimeLard\n\
 						- Igor Petrovich\n\
@@ -143,12 +143,12 @@ var tfu = {
 					");
 					break;
 				default:
-					tfu.send("Команды комнаты:\n\
-						!rule - правило комнаты\n\
-						!hi - сказать с добрым временем суток\n\
-						!bye - сказать всем пока\n\
-						!say [текст] - повторяет то что напишете\n\
-						!gender [+Ник] - сообщит пол\n\
+					tfu.send("РљРѕРјР°РЅРґС‹ РєРѕРјРЅР°С‚С‹:\n\
+						!rule - РїСЂР°РІРёР»Рѕ РєРѕРјРЅР°С‚С‹\n\
+						!hi - СЃРєР°Р·Р°С‚СЊ СЃ РґРѕР±СЂС‹Рј РІСЂРµРјРµРЅРµРј СЃСѓС‚РѕРє\n\
+						!bye - СЃРєР°Р·Р°С‚СЊ РІСЃРµРј РїРѕРєР°\n\
+						!say [С‚РµРєСЃС‚] - РїРѕРІС‚РѕСЂСЏРµС‚ С‚Рѕ С‡С‚Рѕ РЅР°РїРёС€РµС‚Рµ\n\
+						!gender [+РќРёРє] - СЃРѕРѕР±С‰РёС‚ РїРѕР»\n\
 					");
 					break;
 			}
