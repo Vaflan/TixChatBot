@@ -82,10 +82,10 @@ var tfu = {
 		if(msg.substr(0,1) == '!') {
 			var roomId = this.getRoomId(msgObj);
 			var cmd = msg.substr(1).split(' ');
-			cmd[0] = cmd[0].toLowerCase();
+			afterCmd = msg.substr(cmd[0].length + 2);
 			console.log('command: ' + cmd[0] + ' room: ' + roomId);
 
-			switch(cmd[0]) {
+			switch(cmd[0].toLowerCase()) {
 				case 'rule':
 				case 'rules':
 				case 'правила':
@@ -107,7 +107,7 @@ var tfu = {
 				case 'скажи':
 					tfu.deleteAuthorCmd(msgObj);
 					if(cmd.length > 1) {
-						tfu.send("- " + tfu.replaceUser(msgObj, msg.substr(cmd[0].length + 2)) + "\n ( сказал(а): +" + (msgObj.parent().parent().find('.author').text()) + " )");
+						tfu.send("- " + tfu.replaceUser(msgObj, afterCmd) + "\n ( сказал(а): +" + (msgObj.parent().parent().find('.author').text()) + " )");
 					}
 					break;
 				case 'gender':
