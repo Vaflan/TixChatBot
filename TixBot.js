@@ -20,7 +20,6 @@ var tfu = {
 				var $logObject = $(this);
 				var lastActiveObj = $logObject.children().last();
 				var roomId = $logObject.closest('div.Room').attr('data-rid');
-				//console.log('CHECK: '+lastActiveObj.attr('data-time') + ' ' + roomId + ' count: ' + lastActiveObj.find('.line').length+' != '+tfu.roomBase[roomId]['count']);
 				if(lastActiveObj.attr('data-author') != tfu.roomBase[roomId]['author'] || lastActiveObj.attr('data-time') != tfu.roomBase[roomId]['time'] || lastActiveObj.find('.line').length != tfu.roomBase[roomId]['count']) {
 					console.warn('It is found out changes in log');
 
