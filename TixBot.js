@@ -1,16 +1,16 @@
 var tfu = {
-	cookie: 0,
 	roomBase: {},
 	roomId: '1ddf721f-f7e2-44c0-8414-1abef9627b9b',
 
 	init: function() {
+	    	C.debug = false;
 		console.clear();
 		console.log('Init TixBot');
 		$('.Navigation [data-rid='+this.roomId+']').click();
 
 		$('.Room[data-rid]').each(function() {
-			var roomId = $(this).attr('data-rid');
-			if(tfu.roomBase[roomId] === undefined) {
+			var roomId = $(this).data('rid');
+			if(typeof tfu.roomBase[roomId] == 'undefined') {
 				tfu.roomBase[roomId] = {'type': '', 'author': '', 'time': 0, 'count': 0};
 			}
 		});
@@ -19,8 +19,8 @@ var tfu = {
 			$('.Room[data-rid='+tfu.roomId+'] .log').each(function() {
 				var $logObject = $(this);
 				var lastActiveObj = $logObject.children().last();
-				var roomId = $logObject.closest('div.Room').attr('data-rid');
-				if(lastActiveObj.attr('data-author') != tfu.roomBase[roomId]['author'] || lastActiveObj.attr('data-time') != tfu.roomBase[roomId]['time'] || lastActiveObj.find('.line').length != tfu.roomBase[roomId]['count']) {
+				var roomId = $logObject.closest('div.Room').data('rid');
+				if(lastActiveObj.data('author') != tfu.roomBase[roomId]['author'] || lastActiveObj.data('time') != tfu.roomBase[roomId]['time'] || lastActiveObj.find('.line').length != tfu.roomBase[roomId]['count']) {
 					console.warn('It is found out changes in log');
 
 					var goFindNew = false;
@@ -38,20 +38,20 @@ var tfu = {
 							}
 						}
 
-						if(currActiveType == tfu.roomBase[roomId]['type'] && currActiveObj.attr('data-time') == tfu.roomBase[roomId]['time'] && currActiveObj.find('.line').length == tfu.roomBase[roomId]['count']) {
+						if(currActiveType == tfu.roomBase[roomId]['type'] && currActiveObj.data('time') == tfu.roomBase[roomId]['time'] && currActiveObj.find('.line').length == tfu.roomBase[roomId]['count']) {
 							goFindNew = true;
 						}
 					});
 
 					tfu.roomBase[roomId]['type'] = lastActiveObj.hasClass('message') ? 'message' : 'event';
-					tfu.roomBase[roomId]['author'] = lastActiveObj.attr('data-author');
-					tfu.roomBase[roomId]['time'] = lastActiveObj.attr('data-time');
+					tfu.roomBase[roomId]['author'] = lastActiveObj.data('author');
+					tfu.roomBase[roomId]['time'] = lastActiveObj.data('time');
 					tfu.roomBase[roomId]['count'] = lastActiveObj.find('.line').length;
 					var maxOnline = Object.keys(C.rooms[roomId].users).length;
-					if(tfu.roomBase[roomId]['maxOnline']===undefined || tfu.roomBase[roomId]['maxOnline']['count'] < maxOnline) {
+					if(typeof tfu.roomBase[roomId]['maxOnline'] == 'undefined' || tfu.roomBase[roomId]['maxOnline']['count'] < maxOnline) {
 						tfu.roomBase[roomId]['maxOnline'] = {'count': maxOnline, 'date': new Date().getTime()};
 					}
-					if(!goFindNew) {
+					if(!goFindNew && lastActiveObj.length > 0) {
 						if(tfu.roomBase[roomId]['type'] == 'message') {
 							tfu.messageAction(lastActiveObj.find('[data-time]').last());
 						}
@@ -66,6 +66,10 @@ var tfu = {
 	},
 
 	eventAction: function(eventObj) {
+		if(typeof eventObj.data('author') == 'undefined') {
+		    return false;
+		}
+
 		var unixTime = new Date().getTime();
 		var roomId = this.getRoomId(eventObj);
 
@@ -156,15 +160,15 @@ var tfu = {
 	},
 
 	deleteAuthorCmd: function(msgObj) {
-		console.log("Command init by " + msgObj.parent().parent().find('.author').text());
-		msgObj.parent().children('.deleteMessage').click();
+		console.info('Command init by ' + this.getUserData(this.getAuthorID(msgObj)).name);
+		msgObj.closest('.message').find('.deleteMessage').last().click();
 	},
 	send: function(text, chatId) {
-		if(chatId === undefined) {
+		if(typeof chatId == 'undefined') {
 			chatId = this.roomId;
 		}
-		$('.Room[data-rid='+chatId+'] .compose .Input').val(text);
-		$('.Room[data-rid='+chatId+'] .compose .Button').click();
+	   	C.rooms[chatId].$chatMessageInput.val(text);
+		C.rooms[chatId].$chatComposeMessage.submit();
 	},
 	replaceUser: function(html, text) {
 		var userList = html.find('.user');
@@ -176,14 +180,14 @@ var tfu = {
 		return text;
 	},
 	getRoomId: function(ActiveObj) {
-		return ActiveObj.closest('div.Room').attr('data-rid');
+		return ActiveObj.closest('div.Room').data('rid');
 	},
 	getAuthorID: function(msgObj) {
-		return msgObj.parent().parent().find('.author').attr('data-id');
+		return msgObj.parent().parent().find('.author').data('id');
 	},
 	getUserData: function(id, full) {
-		if(C.Room.objects[this.roomId].users[id] !== undefined) {
-			if(full === undefined)
+		if(typeof C.Room.objects[this.roomId].users[id] != 'undefined') {
+			if(typeof full == 'undefined')
 				return C.Room.objects[this.roomId].users[id].data;
 			return C.Room.objects[this.roomId].users[id];
 		}
@@ -193,4 +197,4 @@ var tfu = {
 
 
 
-setTimeout("tfu.init()", 10000);
+setTimeout('tfu.init()', 10000);
