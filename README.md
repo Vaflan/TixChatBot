@@ -19,7 +19,8 @@ Full example with Chrome extension
 	Settings of this example extension: 'Resource Override.png'
 	Change the room ID in the bot code variable roomId: '1ddf721f-f7e2-44c0-8414-1abef9627b9b'
 	And then copy all the code in TixBot.js "Edit File"
-	![Screen of Resource Override](https://github.com/Vaflan/TixChatBot/blob/master/Resource%20Override.png?raw=true)
+
+![Screen of Resource Override](https://github.com/Vaflan/TixChatBot/blob/master/Resource%20Override.png?raw=true)
 
 =====
 
