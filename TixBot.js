@@ -183,7 +183,7 @@ var tfu = {
 		return ActiveObj.closest('div.Room').data('rid');
 	},
 	getAuthorID: function(msgObj) {
-		return msgObj.parent().parent().find('.author').data('id');
+		return msgObj.closest('div[data-author]').data('author');
 	},
 	getUserData: function(id, full) {
 		if(typeof C.Room.objects[this.roomId].users[id] != 'undefined') {
