@@ -8,8 +8,8 @@ Simple example code
 	Change the room ID in the bot code variable roomId: '1ddf721f-f7e2-44c0-8414-1abef9627b9b'
 	Copy the entire code of TixBot.js and paste everything in the browser console
 
-=====
-
+>
+>
 
 Full example with Chrome extension
 =====
@@ -22,5 +22,5 @@ Full example with Chrome extension
 
 ![Screen of Resource Override](https://github.com/Vaflan/TixChatBot/blob/master/Resource%20Override.png?raw=true)
 
-=====
-
+>
+>
